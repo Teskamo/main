@@ -1,6 +1,293 @@
 <html>
-    <head></head>
+    <head>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous">
+        </script>
+        <link rel="stylesheet" href="lib/bulma-0.7.5/css/bulma.min.css">
+        <style>
+            h1{
+                font-size:30px;
+            }
+            .window_UI_file
+            {
+                display:inline-block;
+                padding: 5px 15px;
+                margin-bottom:20px;
+                text-align:center;
+                cursor: default;
+            }
+            .window_UI_file:hover{
+                background:rgba(115, 161, 236,.3);
+                border:rgba(115, 161, 236, .6);
+            }
+            .window_UI_file.selected{
+                background:rgba(115, 161, 236,.6);
+                border:rgba(115, 161, 236, .9);
+            }
+
+                .window_UI_file img{
+                    margin:auto;
+                    display:block;
+                }
+        </style>
+    </head>
     <body>
-        
+        <div><h1>윈도우처럼 사용해주세요</h1></div>
+        <div>TODO:드래그해서 위치 변경하는 툴 찾기</div>
+        <div>안되면 바닥 클릭 다시 수정</div>
+        <div>
+            <div class="window_UI_file" href="https://naver.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>naver</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>Youtube</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test1</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test2</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test3</span>
+            </div>
+        </div>
+        <div>
+            <div class="window_UI_file" href="https://naver.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>naver</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>Youtube</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test1</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test2</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test3</span>
+            </div>
+        </div>
+        <div>
+            <div class="window_UI_file" href="https://naver.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>naver</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>Youtube</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test1</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test2</span>
+            </div>
+            <div class="window_UI_file" href="https://youtube.com">
+                <img src="img/chrome-logo.svg"/>
+                <span>test3</span>
+            </div>
+        </div>
+        <script>
+            $(function(){
+                //아무것도 없는 바닥 클릭
+                $("body").click(function(e){
+                    if($(e.target).is("body")){
+                        $(".window_UI_file").removeClass("selected");
+                    }
+                });
+
+                //window UI 파일 클릭
+                $("body").on("click", ".window_UI_file", function(){
+                    $(".window_UI_file").removeClass("selected");
+                    $(this).addClass("selected");
+                });
+
+                //window UI 파일 더블클릭
+                $("body").on("dblclick",".window_UI_file", function(){
+                    var href = $(this).attr("href");
+                    window.open(href, '_blank');
+                });
+
+                //키보드 방향키
+                $(document).keydown(function(e){
+                    if($(".selected").length > 0){
+                        var selected_top = $(".selected").position().top;
+                        var selected_left = $(".selected").position().left;
+                        switch(e.which){
+                            case 13:    //엔터
+                                $(".selected").dblclick();
+                                break;
+
+                            case 37:    //좌
+                                //왼쪽 중 제일 오른쪽에 있고
+                                var most_right_index = [];
+                                var most_right=0;
+                                var $left_files = $(".window_UI_file:not(.selected)")
+                                .filter(function(index){
+                                    return $(this).position().left < selected_left;
+                                });
+                                $left_files.each(function(index){
+                                    var $this = $(this);
+                                    var left = $this.position().left;
+                                    if(left > most_right){
+                                        most_right_index = [];
+                                        most_right_index.push(index);
+                                        most_right = left;
+                                    } else if(left == most_right){
+                                        most_right_index.push(index);
+                                    }
+                                });
+
+                                //상하 오차가 제일 작은 것
+                                var least_error = 10000;
+                                var least_error_index;
+                                most_right_index.forEach(function(i){
+                                    error = Math.abs($left_files.eq(i).position().top - selected_top);
+                                    if(error < least_error){
+                                        least_error_index = i;
+                                        least_error = error;
+                                    }
+                                });
+
+                                //해당 file 클릭
+                                if(least_error != 10000){
+                                    $(".selected").removeClass("selected");
+                                    $left_files.eq(least_error_index).click();
+                                }
+                                break;
+
+                            case 39:    //우
+                                //오른쪽 중 제일 왼쪽에 있고
+                                var most_left_index = [];
+                                var most_left=10000;
+                                var $right_files = $(".window_UI_file:not(.selected)")
+                                .filter(function(index){
+                                    return $(this).position().left > selected_left;
+                                });
+                                $right_files.each(function(index){
+                                    var $this = $(this);
+                                    var left = $this.position().left;
+                                    if(left < most_left){
+                                        most_left_index = [];
+                                        most_left_index.push(index);
+                                        most_left = left;
+                                    } else if(left == most_left){
+                                        most_left_index.push(index);
+                                    }
+                                });
+
+                                //상하 오차가 제일 작은 것
+                                var least_error = 10000;
+                                var least_error_index;
+                                most_left_index.forEach(function(i){
+                                    error = Math.abs($right_files.eq(i).position().top - selected_top);
+                                    if(error < least_error){
+                                        least_error_index = i;
+                                        least_error = error;
+                                    }
+                                });
+
+                                //해당 file 클릭
+                                if(least_error != 10000){
+                                    $(".selected").removeClass("selected");
+                                    $right_files.eq(least_error_index).click();
+                                }
+                            break;
+
+                            case 38:    //상
+                                //위쪽 중 제일 아래쪽에 있고(숫자가 커야함)
+                                var most_down_index = [];
+                                var most_down=0;
+                                var $up_files = $(".window_UI_file:not(.selected)")
+                                .filter(function(index){
+                                    return $(this).position().top < selected_top;
+                                });
+                                $up_files.each(function(index){
+                                    var $this = $(this);
+                                    var top = $this.position().top;
+                                    if(top > most_down){
+                                        most_down_index = [];
+                                        most_down_index.push(index);
+                                        most_down = top;
+                                    } else if(top == most_down){
+                                        most_down_index.push(index);
+                                    }
+                                });
+
+                                //좌우 오차가 제일 작은 것
+                                var least_error = 10000;
+                                var least_error_index;
+                                most_down_index.forEach(function(i){
+                                    error = Math.abs($up_files.eq(i).position().left - selected_left);
+                                    if(error < least_error){
+                                        least_error_index = i;
+                                        least_error = error;
+                                    }
+                                });
+
+                                //해당 file 클릭
+                                if(least_error != 10000){
+                                    $(".selected").removeClass("selected");
+                                    $up_files.eq(least_error_index).click();
+                                }
+                                break;
+
+                            case 40:    //하
+                                //아래쪽 중 제일 위쪽에 있고(숫자가 작아야함)
+                                var most_up_index = [];
+                                var most_up=10000;
+                                var $down_files = $(".window_UI_file:not(.selected)")
+                                .filter(function(index){
+                                    return $(this).position().top > selected_top;
+                                });
+                                $down_files.each(function(index){
+                                    var $this = $(this);
+                                    var top = $this.position().top;
+                                    if(top < most_up){
+                                        most_up_index = [];
+                                        most_up_index.push(index);
+                                        most_up = top;
+                                    } else if(top == most_up){
+                                        most_up_index.push(index);
+                                    }
+                                });
+
+                                //좌우 오차가 제일 작은 것
+                                var least_error = 10000;
+                                var least_error_index;
+                                most_up_index.forEach(function(i){
+                                    error = Math.abs($down_files.eq(i).position().left - selected_left);
+                                    if(error < least_error){
+                                        least_error_index = i;
+                                        least_error = error;
+                                    }
+                                });
+
+                                //해당 file 클릭
+                                if(least_error != 10000){
+                                    $(".selected").removeClass("selected");
+                                    $down_files.eq(least_error_index).click();
+                                }
+                                break;
+                        }
+                    }
+                })
+            })
+        </script>
     </body>
 </html>
