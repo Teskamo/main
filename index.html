@@ -1,12 +1,17 @@
 <html>
     <head>
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="http://code.jquery.com/jquery-1.8.3.min.js" integrity="sha256-YcbK69I5IXQftf/mYD8WY0/KmEDCv1asggHpJk1trM8=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.min.js" integrity="sha256-eEa1kEtgK9ZL6h60VXwDsJ2rxYCwfxi40VZ9E0XwoEA=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <style>
+            #selectable{
+                height:600px;
+            }
             h1{
                 font-size:30px;
             }
-            .window_UI_file
-            {
+            .window_UI_file{
+                position:absolute;
                 display:inline-block;
                 padding: 5px 15px;
                 margin-bottom:20px;
@@ -15,13 +20,16 @@
             }
             .window_UI_file:hover{
                 background:rgba(115, 161, 236,.3);
-                border:rgba(115, 161, 236, .6);
+                border-color:rgba(115, 161, 236, .6);
+            }
+            #selectable div.ui-selecting,
+            #selectable div.ui-selected{
+                background:rgba(115, 161, 236,.6);
+                border-color:rgba(115, 161, 236, .9);
             }
             .window_UI_file.selected{
-                background:rgba(115, 161, 236,.6);
-                border:rgba(115, 161, 236, .9);
+                border-style:dotted;
             }
-
                 .window_UI_file img{
                     margin:auto;
                     display:block;
@@ -31,83 +39,32 @@
     </head>
     <body>
         <div><h1>윈도우처럼 사용해주세요</h1></div>
-        <div>TODO:드래그해서 위치 변경하는 툴 찾기</div>
-        <div>안되면 바닥 클릭 다시 수정</div>
-        <div>
-            <div class="window_UI_file" href="https://naver.com" data-no="1">
+        <div>TODO:드래그 한 위치를 저장해서 불러오기</div>
+        <div id="selectable">
+            <div class="window_UI_file ui-widget-content" href="https://naver.com" data-no="1" style="left:0px;">
                 <img src="img/logo_naver.png"/>
                 <span>naver</span>
             </div>
-            <div class="window_UI_file" href="https://youtube.com" data-no="2">
+            <div class="window_UI_file ui-widget-content" href="https://youtube.com" data-no="2" style="left:100px;">
                 <img src="img/logo_youtube.png"/>
                 <span>Youtube</span>
             </div>
-            <div class="window_UI_file" href="https://google.com" data-no="3">
+            <div class="window_UI_file ui-widget-content" href="https://google.com" data-no="3" style="left:200px;">
                 <img src="img/logo_google.png"/>
                 <span>구글</span>
             </div>
-            <div class="window_UI_file" href="https://twitch.tv" data-no="4">
+            <div class="window_UI_file ui-widget-content" href="https://twitch.tv" data-no="4" style="left:300px;">
                 <img src="img/logo_twitch.png"/>
                 <span>트위치</span>
             </div>
-            <div class="window_UI_file" href="https://tgd.kr" data-no="5">
+            <div class="window_UI_file ui-widget-content" href="https://tgd.kr" data-no="5" style="left:400px;">
                 <img src="img/logo_tgd.png"/>
                 <span>트게더</span>
             </div>
         </div>
-        <div>
-            <div class="window_UI_file" href="https://naver.com" data-no="6">
-                <img src="img/logo_naver.png"/>
-                <span>naver</span>
-            </div>
-            <div class="window_UI_file" href="https://youtube.com" data-no="7">
-                <img src="img/logo_youtube.png"/>
-                <span>Youtube</span>
-            </div>
-            <div class="window_UI_file" href="https://google.com" data-no="8">
-                <img src="img/logo_google.png"/>
-                <span>구글</span>
-            </div>
-            <div class="window_UI_file" href="https://twitch.tv" data-no="9">
-                <img src="img/logo_twitch.png"/>
-                <span>트위치</span>
-            </div>
-            <div class="window_UI_file" href="https://tgd.kr" data-no="10">
-                <img src="img/logo_tgd.png"/>
-                <span>트게더</span>
-            </div>
-        </div>
-        <div>
-            <div class="window_UI_file" href="https://naver.com" data-no="11">
-                <img src="img/logo_naver.png"/>
-                <span>naver</span>
-            </div>
-            <div class="window_UI_file" href="https://youtube.com" data-no="12">
-                <img src="img/logo_youtube.png"/>
-                <span>Youtube</span>
-            </div>
-            <div class="window_UI_file" href="https://google.com" data-no="13">
-                <img src="img/logo_google.png"/>
-                <span>구글</span>
-            </div>
-            <div class="window_UI_file" href="https://twitch.tv" data-no="14">
-                <img src="img/logo_twitch.png"/>
-                <span>트위치</span>
-            </div>
-            <div class="window_UI_file" href="https://tgd.kr" data-no="15">
-                <img src="img/logo_tgd.png"/>
-                <span>트게더</span>
-            </div>
-        </div>
+        
         <script>
             $(function(){
-                //아무것도 없는 바닥 클릭
-                $("body").click(function(e){
-                    if($(e.target).is("body")){
-                        $(".window_UI_file").removeClass("selected");
-                    }
-                });
-
                 //window UI 파일 클릭
                 $("body").on("click", ".window_UI_file", function(){
                     $(".window_UI_file").removeClass("selected");
@@ -119,6 +76,7 @@
                     var href = $(this).attr("href");
                     window.open(href, '_blank');
                 });
+
 
                 //방향키 및 엔터
                 $(document).keydown(function(e){
@@ -200,7 +158,7 @@
 
                             //가장 작은 오차를 가진 파일 클릭
                             if($candidate_files.length > 0){
-                                $(".selected").removeClass("selected");
+                                $(".selected").removeClass("selected ui-selected");
                                 $(".window_UI_file[data-no='" + least_error_no + "']").click();
                             }
                         } else if(e.which == 13){   //엔터
@@ -208,7 +166,62 @@
                         }
                     }
                 })
+
+                //드래그
+                //http://jsfiddle.net/6f9zW/?utm_source=website&utm_medium=embed&utm_campaign=6f9zW
+                var selected = $([]), offset = {top:0, left:0}; 
+
+                $( "#selectable > div" ).draggable({
+                    start: function(ev, ui) {
+                        if ($(this).hasClass("ui-selected")){
+                            selected = $(".ui-selected.ui-widget-content").each(function() {
+                            var el = $(this);
+                            el.data("offset", el.offset());
+                            });
+                        }
+                        else {
+                            selected = $([]);
+                            $("#selectable > div").removeClass("ui-selected");
+                        }
+                        offset = $(this).offset();
+                    },
+                    drag: function(ev, ui) {
+                        var dt = ui.position.top - offset.top, dl = ui.position.left - offset.left;
+                        // take all the elements that are selected expect $("this"), which is the element being dragged and loop through each.
+                        selected.not(this).each(function() {
+                            // create the variable for we don't need to keep calling $("this")
+                            // el = current element we are on
+                            // off = what position was this element at when it was selected, before drag
+                            var el = $(this), off = el.data("offset");
+                            el.css({top: off.top + dt, left: off.left + dl});
+                        });
+                    }
+                });
+
+                $( "#selectable" ).selectable();
+
+                // manually trigger the "select" of clicked elements
+                $( "#selectable > div" ).click( function(e){
+                    if (e.metaKey == false) {
+                        // if command key is pressed don't deselect existing elements
+                        $( "#selectable > div" ).removeClass("ui-selected");
+                        $(this).addClass("ui-selecting");
+                    }
+                    else {
+                        if ($(this).hasClass("ui-selected")) {
+                            // remove selected class from element if already selected
+                            $(this).removeClass("ui-selected");
+                        }
+                        else {
+                            // add selecting class if not
+                            $(this).addClass("ui-selecting");
+                        }
+                    }
+                    
+                    $( "#selectable" ).data("selectable")._mouseStop(null);
+                });
             })
+            
         </script>
     </body>
 </html>
