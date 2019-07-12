@@ -17,6 +17,7 @@
                 margin-bottom:20px;
                 text-align:center;
                 cursor: default;
+                border-color:transparent;
             }
             .window_UI_file:hover{
                 background:rgba(115, 161, 236,.3);
@@ -39,25 +40,27 @@
     </head>
     <body>
         <div><h1>윈도우처럼 사용해주세요</h1></div>
+        <div>TODO:여러개 선택 후 엔터</div>
+        <div>TODO:Ctrl, Shift 누르고 선택</div>
         <div>TODO:드래그 한 위치를 저장해서 불러오기</div>
         <div id="selectable">
-            <div class="window_UI_file ui-widget-content" href="https://naver.com" data-no="1" style="left:0px;">
+            <div class="window_UI_file ui-widget-content" href="https://naver.com" data-no="1" style="top:200px;left:0px;">
                 <img src="img/logo_naver.png"/>
                 <span>naver</span>
             </div>
-            <div class="window_UI_file ui-widget-content" href="https://youtube.com" data-no="2" style="left:100px;">
+            <div class="window_UI_file ui-widget-content" href="https://youtube.com" data-no="2" style="top:220px;left:100px;">
                 <img src="img/logo_youtube.png"/>
                 <span>Youtube</span>
             </div>
-            <div class="window_UI_file ui-widget-content" href="https://google.com" data-no="3" style="left:200px;">
+            <div class="window_UI_file ui-widget-content" href="https://google.com" data-no="3" style="top:240px;left:200px;">
                 <img src="img/logo_google.png"/>
                 <span>구글</span>
             </div>
-            <div class="window_UI_file ui-widget-content" href="https://twitch.tv" data-no="4" style="left:300px;">
+            <div class="window_UI_file ui-widget-content" href="https://twitch.tv" data-no="4" style="top:260px;left:300px;">
                 <img src="img/logo_twitch.png"/>
                 <span>트위치</span>
             </div>
-            <div class="window_UI_file ui-widget-content" href="https://tgd.kr" data-no="5" style="left:400px;">
+            <div class="window_UI_file ui-widget-content" href="https://tgd.kr" data-no="5" style="top:280px;left:400px;">
                 <img src="img/logo_tgd.png"/>
                 <span>트게더</span>
             </div>
@@ -158,11 +161,11 @@
 
                             //가장 작은 오차를 가진 파일 클릭
                             if($candidate_files.length > 0){
-                                $(".selected").removeClass("selected ui-selected");
+                                $(".ui-selected").removeClass("selected ui-selected");
                                 $(".window_UI_file[data-no='" + least_error_no + "']").click();
                             }
                         } else if(e.which == 13){   //엔터
-                            $(".selected").dblclick();
+                            $(".ui-selected").dblclick();
                         }
                     }
                 })
