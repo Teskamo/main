@@ -6,18 +6,21 @@
 		<button type="button" id="btn">test</button>
 	</body>
 	<script>
+		data = {
+			"action":"get",
+			"wagonType":"available",
+			"yr":"2020",
+			"mm":"07",
+			"day":"09"
+		}
+
 		$("#btn").click(function(){
 			$.ajax({
 				url:"http://www.uicd.co.kr/api/application/wagons.asp",
 				type:"POST",
 				dataType:"JSON",
-				data:{
-					"action":"get",
-					"wagonType":"available",
-					"yr":"2020",
-					"mm":"07",
-					"day":"09"
-				},
+				data: JSON.stringify(data)
+				,
 				success:function(data, status, xhr){
 					debugger;
 					console.log(data);
